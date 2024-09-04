@@ -4,6 +4,7 @@ import 'flowbite';
 
 const logout = document.querySelector( '#logout' );
 if( logout ) {
+    console.log('ыфдге,')
     logout.addEventListener( 'click', (e) => {
         e.preventDefault();
 
