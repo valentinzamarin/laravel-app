@@ -23,5 +23,9 @@
         </p>
         <hr class="block mb-12">
         {{ $post['post_content'] }}
+        <hr class="block mb-12">
+        @foreach ($post->tags as $tag)
+            <span>{{ $tag->name }}</span>
+        @endforeach
     </div>
 @endsection
