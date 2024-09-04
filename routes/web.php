@@ -24,3 +24,5 @@ Route::post('/create-post', [ PostController::class, 'create_post' ] );
 Route::get( '/post/{post}', [ PostController::class, 'post_screen' ] );
 Route::get('/post/{post}/edit', [ PostController::class, 'edit_post_screen']);
 Route::put('/post/{post}/edit', [ PostController::class, 'save_post']);
+
+Route::get('/post/tags/{tag}', [ PostController::class, 'post_tag_screen']);

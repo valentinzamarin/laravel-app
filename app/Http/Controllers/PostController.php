@@ -4,19 +4,29 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\Tag;
 
 class PostController extends Controller {
     public function create_post( Request $request ) {
         $postFields = $request->validate([
             'post_title'   => [ 'required' ],
-            'post_content' => [ 'required' ]
+            'post_content' => [ 'required' ],
+            'tags'         => [],
         ]);
 
         $postFields['post_title']       = strip_tags( $postFields['post_title'] );
         $postFields['post_content'] = strip_tags( $postFields['post_content'] );
         $postFields['user_id']     = auth()->id();
 
-        Post::create( $postFields );
+        $post = Post::create( $postFields );
+
+        if ($request->has('tags')) {
+            $tags = explode(',', $postFields['tags']);
+            foreach ($tags as $tagName) {
+                $tag = Tag::firstOrCreate(['name' => trim($tagName)]);
+                $post->tags()->attach($tag);
+            }
+        }
 
         return redirect( '/' );
     }
@@ -40,7 +50,7 @@ class PostController extends Controller {
 
         $editFields = $request->validate([
             'post_title'   => [ 'required' ],
-            'post_content' => [ 'required' ]
+            'post_content' => [ 'required' ],
         ]);
 
         $editFields['post_title']   = strip_tags( $editFields['post_title'] );
@@ -49,5 +59,11 @@ class PostController extends Controller {
         $post->update( $editFields );
 
         return redirect("/post/{$post->id}");
+    }
+
+    public function post_tag_screen( $tag ) {
+        $tag = Tag::where('name', $tag)->firstOrFail();
+        $posts = $tag->posts;
+        return view('Taxonomy', [ 'posts' => $posts, 'tag' => $tag ] );
     }
 }

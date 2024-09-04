@@ -23,5 +23,11 @@
         </p>
         <hr class="block mb-12">
         {{ $post['post_content'] }}
+        <hr class="block mb-12">
+        @foreach ($post->tags as $tag)
+            <a href="{{ url('/post/tags/' . $tag->name ) }}" class="block mb-4 underline text-blue-500">
+                {{ $tag->name }}
+            </a>
+        @endforeach
     </div>
 @endsection
