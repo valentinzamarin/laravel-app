@@ -60,4 +60,10 @@ class PostController extends Controller {
 
         return redirect("/post/{$post->id}");
     }
+
+    public function post_tag_screen( $tag ) {
+        $tag = Tag::where('name', $tag)->firstOrFail();
+        $posts = $tag->posts;
+        return view('Taxonomy', [ 'posts' => $posts, 'tag' => $tag ] );
+    }
 }
