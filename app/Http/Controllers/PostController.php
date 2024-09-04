@@ -61,6 +61,19 @@ class PostController extends Controller {
         return redirect("/post/{$post->id}");
     }
 
+    public function delete_post( $id ) {
+        $post = Post::findOrFail($id);
+
+        if (auth()->check() && auth()->user()->id === $post->user_id) {
+            $post->delete();
+            return response()->json(['success' => true]);
+        }
+
+        return response()->json(['success' => false], 403);
+    }
+
+
+
     public function post_tag_screen( $tag ) {
         $tag = Tag::where('name', $tag)->firstOrFail();
         $posts = $tag->posts;

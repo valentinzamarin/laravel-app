@@ -10,9 +10,12 @@
                 {{ $post['post_title'] }}
             </h1>
             @if(  auth()->id() === $post['user_id'] )
-                <div>
+                <div class="flex flex-row gap-4 items-center">
                     <a href="{{ url('/post/' . $post->id . '/edit') }}" class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
                         Edit Post
+                    </a>
+                    <a href="#" id="delete" data-post="{{$post->id}}" class="bg-rose-700 hover:bg-rose-700 text-white font-bold py-2 px-4 rounded">
+                        Delete Post
                     </a>
                 </div>
             @endif
@@ -22,7 +25,9 @@
             {{ $post->user->name }}
         </p>
         <hr class="block mb-12">
-        {{ $post['post_content'] }}
+        <div class="mb-12">
+            {{ $post['post_content'] }}
+        </div>
         <hr class="block mb-12">
         @foreach ($post->tags as $tag)
             <a href="{{ url('/post/tags/' . $tag->name ) }}" class="block mb-4 underline text-blue-500">
